@@ -38,8 +38,10 @@ public class Util {
         return sessionFactory.openSession();
     }
     public static void closeHibernate(Session session){
-        session.flush();
-        session.close();
-        sessionFactory.close();
+        if (session != null) {
+            session.flush();
+            session.close();
+            sessionFactory.close();
+        }
     }
 }
