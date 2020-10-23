@@ -6,8 +6,6 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import java.sql.SQLException;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -33,24 +31,26 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
+        } finally {
+            Util.closeHibernate(session);
         }
-        Util.closeHibernate(session);
     }
 
     @Override
     public void dropUsersTable() {
-        Session session;
+        Session session = null;
         Transaction transaction =null;
         try {
             session = Util.getSession();
             transaction = session.beginTransaction();
             session.createSQLQuery("drop table if exists user").executeUpdate();
             transaction.commit();
-            Util.closeHibernate(session);
         } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
+        } finally {
+            Util.closeHibernate(session);
         }
     }
 
@@ -67,8 +67,9 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
+        } finally {
+            Util.closeHibernate(session);
         }
-        Util.closeHibernate(session);
     }
 
     @Override
@@ -85,8 +86,9 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
+        } finally {
+            Util.closeHibernate(session);
         }
-        Util.closeHibernate(session);
     }
 
     @Override
@@ -111,7 +113,8 @@ public class UserDaoHibernateImpl implements UserDao {
             if (transaction != null) {
                 transaction.rollback();
             }
+        } finally {
+            Util.closeHibernate(session);
         }
-        Util.closeHibernate(session);
     }
 }
